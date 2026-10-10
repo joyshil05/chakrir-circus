@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>চাকরির সার্কাস — বস vs কর্মচারী</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@600;800&family=Hind+Siliguri:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --ink:#14142B;
+  --bg:#3340F2;
+  --paper:#FFFFFF;
+  --yellow:#FFD23F;
+  --pink:#FF5C8A;
+  --mint:#3DDC97;
+  --focus:#3340F2;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){ --bg:#1A1F7A; } }
+:root[data-theme="dark"]{ --bg:#1A1F7A; }
+html{ scroll-padding-top:env(safe-area-inset-top,0px); }
+*,*::before,*::after{ box-sizing:inherit; }
+[hidden]{ display:none !important; }
+body{
+  margin:0; background:var(--bg); color:#fff;
+  font-family:'Hind Siliguri','Noto Sans Bengali',system-ui,sans-serif;
+  font-size:17px; line-height:1.6;
+  padding:20px 14px 40px;
+}
+.display{ font-family:'Baloo Da 2','Hind Siliguri',system-ui,sans-serif; font-weight:800; }
+
+/* ---------- header ---------- */
+.top{ max-width:980px; margin:0 auto 22px; text-align:center; }
+.top h1{
+  margin:0; font-family:'Baloo Da 2','Hind Siliguri',sans-serif; font-weight:800;
+  font-size:clamp(2.6rem,10vw,5rem); line-height:1.15; color:var(--yellow);
+  -webkit-text-stroke:7px var(--ink); paint-order:stroke fill;
+  text-shadow:5px 5px 0 var(--ink); transform:rotate(-2deg); display:inline-block;
+}
+.top p{ margin:10px auto 0; max-width:34em; font-size:clamp(15px,4vw,18px); }
+
+/* ---------- live stage ---------- */
+.stage{
+  position:relative; max-width:980px; margin:0 auto;
+  display:grid; grid-template-columns:1fr 1fr;
+  background-color:var(--yellow);
+  background-image:radial-gradient(rgba(20,20,43,.16) 1.7px,transparent 1.8px);
+  background-size:14px 14px;
+  border:4px solid var(--ink); border-radius:28px; box-shadow:8px 8px 0 var(--ink);
+  padding:16px 8px 14px; color:var(--ink); overflow:hidden;
+}
+.actor{ display:flex; flex-direction:column; align-items:center; padding:0 6px; min-width:0; }
+.bubble{
+  position:relative; background:#fff; border:3px solid var(--ink); border-radius:18px;
+  padding:8px 12px; width:100%; max-width:300px; min-height:4.6em; margin-bottom:16px;
+  display:flex; align-items:center; justify-content:center; text-align:center;
+  font-weight:600; font-size:clamp(12.5px,3.5vw,16px); line-height:1.45;
+}
+.bubble::after{
+  content:""; position:absolute; left:50%; bottom:-12px; width:18px; height:18px; background:#fff;
+  border-right:3px solid var(--ink); border-bottom:3px solid var(--ink);
+  transform:translateX(-50%) rotate(45deg);
+}
+.bpop{ animation:bpop .32s ease-out; }
+@keyframes bpop{ 0%{ transform:scale(.88) rotate(-2deg); } 60%{ transform:scale(1.04); } 100%{ transform:scale(1); } }
+.fig{ width:min(100%,240px); }
+.nametag{
+  margin-top:8px; background:var(--ink); color:#fff; border-radius:12px; padding:0 14px;
+  font-family:'Baloo Da 2','Hind Siliguri',sans-serif; font-weight:800; font-size:clamp(15px,4vw,19px);
+  max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+}
+.vs{
+  position:absolute; left:50%; top:58%; transform:translate(-50%,-50%) rotate(-8deg);
+  width:56px; height:56px; border-radius:50%; background:var(--pink); color:#fff;
+  border:3px solid var(--ink); box-shadow:3px 3px 0 var(--ink);
+  display:grid; place-items:center; font-family:'Baloo Da 2',sans-serif; font-weight:800; font-size:20px;
+  -webkit-text-stroke:1px var(--ink); paint-order:stroke fill; z-index:2;
+}
+
+/* ---------- builder ---------- */
+.builder{ max-width:980px; margin:30px auto 0; display:grid; gap:22px; }
+@media (min-width:900px){ .builder{ grid-template-columns:1fr 1fr; align-items:start; } }
+.panel{
+  background:var(--paper); color:var(--ink); border:4px solid var(--ink); border-radius:22px;
+  box-shadow:6px 6px 0 var(--ink); overflow:hidden;
+}
+.panel h2{
+  margin:0; padding:8px 18px; font-family:'Baloo Da 2','Hind Siliguri',sans-serif; font-weight:800;
+  font-size:1.55rem; border-bottom:4px solid var(--ink);
+}
+.panel.emp h2{ background:var(--mint); }
+.panel.boss h2{ background:var(--pink); }
+.panel .body{ padding:16px 18px 20px; display:grid; gap:18px; }
+.qlabel{ font-weight:600; margin-bottom:8px; }
+.field input[type=text]{
+  width:100%; font:inherit; font-size:16px; color:var(--ink); background:#fff;
+  border:3px solid var(--ink); border-radius:12px; padding:8px 14px;
+}
+.field input[type=text]:focus-visible{ outline:3px solid var(--focus); outline-offset:2px; }
+.chips{ display:flex; flex-wrap:wrap; gap:8px; }
+.chip{ position:relative; }
+.chip input{ position:absolute; inset:0; width:100%; height:100%; margin:0; opacity:0; cursor:pointer; }
+.chip span{
+  display:inline-block; padding:5px 14px; background:#fff; color:var(--ink);
+  border:3px solid var(--ink); border-radius:999px; font-size:15px; line-height:1.5;
+  transition:transform .12s, box-shadow .12s, background .12s;
+}
+.chip input:checked + span{ background:var(--yellow); box-shadow:3px 3px 0 var(--ink); transform:translate(-2px,-2px); font-weight:600; }
+.chip input:focus-visible + span{ outline:3px solid var(--focus); outline-offset:3px; }
+
+/* ---------- buttons ---------- */
+.cta{ max-width:980px; margin:30px auto 0; display:flex; flex-wrap:wrap; gap:14px; justify-content:center; }
+.btn{
+  font-family:'Baloo Da 2','Hind Siliguri',sans-serif; font-weight:800; font-size:1.25rem; line-height:1.4;
+  color:var(--ink); background:#fff; border:4px solid var(--ink); border-radius:18px; padding:8px 24px;
+  box-shadow:5px 5px 0 var(--ink); cursor:pointer; transition:transform .1s, box-shadow .1s;
+}
+.btn:hover{ transform:translate(-1px,-1px); box-shadow:6px 6px 0 var(--ink); }
+.btn:active{ transform:translate(5px,5px); box-shadow:0 0 0 var(--ink); }
+.btn:focus-visible{ outline:4px solid var(--yellow); outline-offset:4px; }
+.btn.main{ background:var(--pink); color:#fff; font-size:1.55rem; padding:10px 30px; -webkit-text-stroke:0; text-shadow:2px 2px 0 var(--ink); }
+.btn[disabled]{ opacity:.85; cursor:wait; }
+
+/* ---------- result ---------- */
+.result{ max-width:980px; margin:46px auto 0; }
+.result .big{
+  margin:0; text-align:center; font-family:'Baloo Da 2','Hind Siliguri',sans-serif; font-weight:800;
+  font-size:clamp(2rem,7vw,3.2rem); color:var(--yellow);
+  -webkit-text-stroke:6px var(--ink); paint-order:stroke fill; text-shadow:4px 4px 0 var(--ink);
+}
+.cards{ display:grid; gap:24px; margin-top:22px; }
+@media (min-width:760px){ .cards{ grid-template-columns:1fr 1fr; } }
+.card{
+  position:relative; background:#fff; color:var(--ink); border:4px solid var(--ink); border-radius:24px;
+  box-shadow:8px 8px 0 var(--ink); overflow:hidden;
+}
+.photo{
+  position:relative; padding:18px 20px 0; border-bottom:4px solid var(--ink);
+  background-image:radial-gradient(rgba(20,20,43,.14) 1.6px,transparent 1.7px); background-size:13px 13px;
+}
+.photo.e{ background-color:#B7F2D6; }
+.photo.b{ background-color:#FFC4D6; }
+.photo .fig{ width:min(66%,210px); margin:0 auto; }
+.stamp{
+  position:absolute; top:16px; right:14px; z-index:2; padding:0 12px;
+  font-family:'Baloo Da 2',sans-serif; font-weight:800; font-size:1.2rem; color:#D8174B;
+  border:4px solid #D8174B; border-radius:10px; background:rgba(255,255,255,.85);
+  transform:rotate(12deg);
+}
+.cbody{ padding:16px 20px 22px; }
+.cbody h3{ margin:0; font-family:'Baloo Da 2','Hind Siliguri',sans-serif; font-weight:800; font-size:2rem; line-height:1.25; }
+.jobtitle{ margin:2px 0 10px; font-weight:600; font-size:1.05rem; }
+.badges{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px; }
+.badge{ border:3px solid var(--ink); border-radius:10px; padding:0 10px; font-size:14px; font-weight:500; background:var(--yellow); }
+.stats{ display:grid; gap:9px; margin-bottom:16px; }
+.stat-top{ display:flex; justify-content:space-between; font-size:14.5px; font-weight:500; }
+.track{ height:16px; border:3px solid var(--ink); border-radius:999px; background:#fff; overflow:hidden; }
+.fill{ height:100%; width:0; transition:width 1s cubic-bezier(.2,.8,.2,1); border-right:3px solid var(--ink); }
+.fill.zero{ border-right:0; }
+.said{ margin:0; display:grid; gap:8px; }
+.said div{ border:3px solid var(--ink); border-radius:12px; padding:6px 12px; }
+.said div.t{ background:#DFF8EC; }
+.said div.r{ background:#FFE0E7; }
+.said dt{ font-weight:600; font-size:14px; }
+.said dd{ margin:0; font-size:15.5px; }
+.quote{ margin:14px 0 0; padding:8px 14px; background:var(--ink); color:#fff; border-radius:14px; font-weight:500; }
+
+.reveal{ animation:reveal .7s cubic-bezier(.2,.9,.3,1.2) both; }
+.reveal.r2{ animation-delay:.25s; }
+@keyframes reveal{ from{ opacity:0; transform:translateY(46px) rotate(-3deg) scale(.94); } to{ opacity:1; transform:none; } }
+.stamp{ animation:stamp .5s .9s cubic-bezier(.2,.8,.3,1) both; }
+@keyframes stamp{ 0%{ opacity:0; transform:rotate(12deg) scale(2.6); } 70%{ opacity:1; transform:rotate(12deg) scale(.92); } 100%{ opacity:1; transform:rotate(12deg) scale(1); } }
+
+.match{
+  margin-top:28px; background:var(--yellow); color:var(--ink); border:4px solid var(--ink);
+  border-radius:24px; box-shadow:8px 8px 0 var(--ink); padding:20px 22px; text-align:center;
+}
+.match .pct{ font-family:'Baloo Da 2',sans-serif; font-weight:800; font-size:clamp(3rem,12vw,4.6rem); line-height:1.1; }
+.match .lbl{ font-weight:600; }
+.match .mtrack{ height:26px; border:4px solid var(--ink); border-radius:999px; background:#fff; margin:12px auto; max-width:520px; overflow:hidden; }
+.match .mfill{ height:100%; width:0; background:var(--pink); border-right:4px solid var(--ink); transition:width 1.4s cubic-bezier(.2,.8,.2,1) .4s; }
+.match .verdict{ font-size:1.15rem; font-weight:600; }
+.actions{ display:flex; flex-wrap:wrap; gap:14px; justify-content:center; margin-top:26px; }
+
+.foot{ max-width:980px; margin:44px auto 0; text-align:center; font-size:14px; opacity:.85; }
+.toast{
+  position:fixed; left:50%; bottom:calc(20px + env(safe-area-inset-bottom,0px)); transform:translate(-50%,30px);
+  background:var(--ink); color:#fff; border:3px solid #fff; border-radius:14px; padding:6px 18px; font-weight:600;
+  opacity:0; pointer-events:none; transition:opacity .2s, transform .2s; z-index:20;
+}
+.toast.on{ opacity:1; transform:translate(-50%,0); }
+
+/* ---------- characters ---------- */
+.char{ display:block; width:100%; height:auto; overflow:visible; }
+.char .fx{ transform-box:fill-box; transform-origin:center; }
+.char .head{ transform-box:view-box; transform-origin:100px 150px; }
+.char .all{ transform-box:view-box; transform-origin:100px 260px; }
+
+.m-sleepy .head{ animation:nod 3.4s ease-in-out infinite; }
+@keyframes nod{ 0%,35%,100%{ transform:rotate(0); } 55%,80%{ transform:rotate(10deg) translateY(5px); } }
+.zz{ opacity:0; animation:zz 3s ease-out infinite; }
+.z1{ animation-delay:1s; } .z2{ animation-delay:2s; }
+@keyframes zz{ 0%{ opacity:0; transform:translate(0,12px) scale(.6); } 25%{ opacity:1; } 100%{ opacity:0; transform:translate(16px,-34px) scale(1.2); } }
+.drool{ transform-box:fill-box; transform-origin:50% 0; animation:drool 2.4s ease-in-out infinite; }
+@keyframes drool{ 0%,100%{ transform:scaleY(.5); } 50%{ transform:scaleY(1.2); } }
+.steam{ opacity:0; animation:steam 2.6s ease-out infinite; }
+.st1{ animation-delay:.85s; } .st2{ animation-delay:1.7s; }
+@keyframes steam{ 0%{ opacity:0; transform:translateY(6px); } 30%{ opacity:1; } 100%{ opacity:0; transform:translateY(-20px); } }
+.m-chai .all{ animation:bounce 1.1s ease-in-out infinite; }
+@keyframes bounce{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-5px); } }
+.m-fake .head{ animation:type .3s steps(1) infinite alternate; }
+@keyframes type{ from{ transform:translateY(0); } to{ transform:translateY(2px); } }
+.sweat{ animation:sweat 1.7s ease-in infinite; }
+@keyframes sweat{ 0%{ opacity:0; transform:translateY(-8px); } 30%{ opacity:1; } 100%{ opacity:0; transform:translateY(18px); } }
+.pop{ animation:pop 1.6s ease-in-out infinite; }
+@keyframes pop{ 0%,100%{ transform:scale(1) rotate(-3deg); } 50%{ transform:scale(1.1) rotate(3deg); } }
+.m-zombie .all{ animation:shake .45s linear infinite; }
+@keyframes shake{ 0%,100%{ transform:translate(0,0) rotate(0); } 25%{ transform:translate(-1.5px,1px) rotate(-.6deg); } 75%{ transform:translate(1.5px,-1px) rotate(.6deg); } }
+.floaty{ animation:floaty 2.2s ease-in-out infinite; }
+@keyframes floaty{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-6px); } }
+
+.m-asap .head{ animation:rage .2s linear infinite; }
+@keyframes rage{ 0%,100%{ transform:translateX(0); } 50%{ transform:translateX(1.6px); } }
+.puff{ opacity:0; animation:puff 1.4s ease-out infinite; }
+.p1{ animation-delay:.35s; } .p2{ animation-delay:.7s; } .p3{ animation-delay:1.05s; }
+@keyframes puff{ 0%{ opacity:0; transform:translateY(4px) scale(.4); } 25%{ opacity:1; } 100%{ opacity:0; transform:translateY(-34px) scale(1.5); } }
+.shout{ animation:shout .3s ease-in-out infinite alternate; }
+@keyframes shout{ from{ transform:scale(.92); } to{ transform:scale(1.08); } }
+.point{ transform-box:view-box; transform-origin:150px 178px; animation:point .5s ease-in-out infinite alternate; }
+@keyframes point{ from{ transform:rotate(-4deg); } to{ transform:rotate(5deg); } }
+
+.m-meeting .head{ animation:bob .7s ease-in-out infinite alternate; }
+@keyframes bob{ from{ transform:rotate(-2deg); } to{ transform:rotate(2deg) translateY(2px); } }
+.talk{ animation:talk .45s ease-in-out infinite; }
+@keyframes talk{ 0%,100%{ transform:scaleY(.35); } 50%{ transform:scaleY(1.1); } }
+.tick{ animation:wig 1s ease-in-out infinite; }
+@keyframes wig{ 0%,100%{ transform:rotate(-8deg); } 50%{ transform:rotate(8deg); } }
+
+.m-midnight .head{ animation:creep 4s ease-in-out infinite; }
+@keyframes creep{ 0%,100%{ transform:rotate(-3deg); } 50%{ transform:rotate(4deg); } }
+.glow{ animation:glow 1.2s ease-in-out infinite; }
+@keyframes glow{ 0%,100%{ opacity:.25; transform:scale(.9); } 50%{ opacity:.6; transform:scale(1.2); } }
+.ting{ opacity:0; animation:ting 1.8s ease-out infinite; }
+@keyframes ting{ 0%{ opacity:0; transform:scale(.3); } 20%{ opacity:1; transform:scale(1.1); } 60%{ opacity:1; transform:scale(1); } 100%{ opacity:0; transform:scale(1) translateY(-8px); } }
+
+.m-credit .head{ animation:smug 3s ease-in-out infinite; }
+@keyframes smug{ 0%,100%{ transform:rotate(0); } 50%{ transform:rotate(-5deg) translateY(-2px); } }
+.twinkle{ animation:twinkle 1.4s ease-in-out infinite; }
+.t1{ animation-delay:.5s; } .t2{ animation-delay:.9s; }
+@keyframes twinkle{ 0%,100%{ transform:scale(.2) rotate(0); opacity:.3; } 50%{ transform:scale(1) rotate(45deg); opacity:1; } }
+
+.m-friendly .head{ animation:sway 1.6s ease-in-out infinite alternate; }
+@keyframes sway{ from{ transform:rotate(-5deg); } to{ transform:rotate(5deg); } }
+.beat{ animation:beat .7s ease-in-out infinite; }
+@keyframes beat{ 0%,100%{ transform:scale(1); } 50%{ transform:scale(1.25); } }
+.hf{ opacity:0; animation:hf 2.4s ease-out infinite; }
+.hf.h1{ animation-delay:.8s; } .hf.h2{ animation-delay:1.6s; }
+@keyframes hf{ 0%{ opacity:0; transform:translateY(8px) scale(.6); } 25%{ opacity:1; } 100%{ opacity:0; transform:translateY(-40px) scale(1.1); } }
+.wave{ transform-box:view-box; transform-origin:150px 178px; animation:wave .55s ease-in-out infinite alternate; }
+@keyframes wave{ from{ transform:rotate(-8deg); } to{ transform:rotate(10deg); } }
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{ animation:none !important; transition:none !important; }
+}
+
+/* ---------- v2 additions ---------- */
+.kw{ border-top:3px dashed var(--ink); padding-top:14px; }
+.kwrow{ display:flex; gap:8px; }
+.kwrow input{ flex:1; min-width:0; font:inherit; font-size:16px; color:var(--ink); background:#fff; border:3px solid var(--ink); border-radius:12px; padding:8px 14px; }
+.kwrow input:focus-visible{ outline:3px solid var(--focus); outline-offset:2px; }
+.kwadd{ font:inherit; font-weight:600; color:var(--ink); background:var(--yellow); border:3px solid var(--ink); border-radius:12px; padding:0 16px; cursor:pointer; box-shadow:3px 3px 0 var(--ink); }
+.kwadd:active{ transform:translate(3px,3px); box-shadow:none; }
+.kwadd:focus-visible,.sg:focus-visible,.tagx:focus-visible{ outline:3px solid var(--focus); outline-offset:2px; }
+.tags{ display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+.tags:empty{ display:none; }
+.tag{ display:inline-flex; align-items:center; gap:6px; border:3px solid var(--ink); border-radius:999px; padding:0 6px 0 12px; font-size:15px; font-weight:500; }
+.tag.ok{ background:#BDF3DA; }
+.tag.cu{ background:#FFE58A; border-style:dashed; }
+.tagx{ font:inherit; font-weight:600; line-height:1; width:24px; height:24px; border-radius:50%; border:2px solid var(--ink); background:#fff; color:var(--ink); cursor:pointer; padding:0; }
+.sgs{ display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; align-items:center; }
+.sgs small{ font-size:13.5px; opacity:.75; }
+.sg{ font:inherit; font-size:13.5px; color:var(--ink); background:#fff; border:2px solid var(--ink); border-radius:999px; padding:0 10px; cursor:pointer; }
+.sg:hover{ background:var(--yellow); }
+.hint{ margin:10px 0 0; font-size:14px; line-height:1.55; opacity:.85; }
+
+.topbar{ max-width:980px; margin:0 auto 18px; display:flex; flex-wrap:wrap; gap:12px; justify-content:center; }
+.btn.small{ font-size:1.05rem; padding:4px 18px; border-width:3px; box-shadow:4px 4px 0 var(--ink); }
+.export{ margin-top:30px; }
+.posterwrap{ display:grid; justify-items:center; gap:8px; }
+.posterwrap img{ width:100%; max-width:480px; height:auto; aspect-ratio:4/5; border:4px solid var(--ink); border-radius:14px; box-shadow:6px 6px 0 var(--ink); background:#E9E9F7; }
+.pstatus{ font-size:14px; min-height:1.4em; }
+.export .actions{ margin-top:6px; }
+.anal{ display:grid; gap:18px; }
+@media (min-width:760px){ .anal{ grid-template-columns:1fr 1fr; } }
+.anal h3{ margin:0 0 6px; font-family:'Baloo Da 2','Hind Siliguri',sans-serif; font-size:1.25rem; }
+.anal ul{ margin:0; padding-left:20px; display:grid; gap:4px; font-size:15px; }
+.anal .fin{ margin:8px 0 0; font-weight:600; font-size:15px; }
+.fill.cus{ border-right-color:var(--ink); }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <h1>চাকরির সার্কাস</h1>
+  <p>বস আর কর্মচারীর কার্টুন বানাও। নিজের মতো করে ফিচার লেখো, আমি বিশ্লেষণ করে ক্যারেক্টার আঁকব। সবার জন্য ফ্রি, লগইন লাগবে না।</p>
+</header>
+
+<div id="viewBuild">
+  <section class="stage" aria-label="লাইভ প্রিভিউ">
+    <div class="actor">
+      <div class="bubble" id="empBubble"></div>
+      <div class="fig" id="empFig"></div>
+      <div class="nametag" id="empTag"></div>
+    </div>
+    <div class="vs" aria-hidden="true">VS</div>
+    <div class="actor">
+      <div class="bubble" id="bossBubble"></div>
+      <div class="fig" id="bossFig"></div>
+      <div class="nametag" id="bossTag"></div>
+    </div>
+  </section>
+
+  <main class="builder">
+    <section class="panel emp" aria-labelledby="empH">
+      <h2 id="empH">👷 কর্মচারী বানাও</h2>
+      <div class="body" id="empForm"></div>
+    </section>
+    <section class="panel boss" aria-labelledby="bossH">
+      <h2 id="bossH">🤵 বস বানাও</h2>
+      <div class="body" id="bossForm"></div>
+    </section>
+  </main>
+
+  <div class="cta">
+    <button class="btn main" id="goBtn" type="button">🎬 প্রোফাইল রেডি করো!</button>
+    <button class="btn" id="randBtn" type="button">🎲 এলোমেলো বেছে দাও</button>
+  </div>
+</div>
+
+<div id="viewResult" hidden>
+  <div class="topbar">
+    <button class="btn small" id="editBtn" type="button">✏️ এডিট করো</button>
+    <button class="btn small" id="newBtn" type="button">🆕 নতুন বানাও</button>
+  </div>
+  <section class="result" id="result"></section>
+</div>
+
+<p class="foot">শুধু মজার জন্য। কোনো আসল বস বা কর্মচারীর সাথে মিলে গেলে সেটা কাকতালীয়। 😄</p>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(function(){
+'use strict';
+
+/* ================= helpers ================= */
+const $ = (s,r=document)=>r.querySelector(s);
+const esc = s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const RM = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+function hash(s){ let h=2166136261; for(const c of s){ h^=c.codePointAt(0); h=Math.imul(h,16777619); } return h>>>0; }
+function rng(seed){ return function(){ seed|=0; seed=seed+0x6D2B79F5|0; let t=Math.imul(seed^seed>>>15,1|seed); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
+
+/* ================= options ================= */
+const EMP_MOODS=[
+  {id:'sleepy',emoji:'😴',label:'মিটিং-এ ঘুমায়'},
+  {id:'chai',emoji:'🍵',label:'চা ছাড়া কাজ হয় না'},
+  {id:'fake',emoji:'🙋',label:'সবসময় “Done স্যার” বলে'},
+  {id:'zombie',emoji:'🧟',label:'রাত ২টাতেও অনলাইন'}
+];
+const EMP_LOOKS=[
+  {id:'spiky',emoji:'🦔',label:'খাড়া চুল'},
+  {id:'long',emoji:'💇',label:'লম্বা চুল'},
+  {id:'cap',emoji:'🧢',label:'টুপিওয়ালা'},
+  {id:'bald',emoji:'🥚',label:'ন্যাড়া'}
+];
+const FOODS=[
+  {id:'chai',emoji:'🍵',label:'চা'},
+  {id:'coffee',emoji:'☕',label:'কফি'},
+  {id:'singara',emoji:'🔺',label:'সিঙ্গারা'},
+  {id:'biriyani',emoji:'🍛',label:'বিরিয়ানি'}
+];
+const EXCUSES=[
+  {id:'net',emoji:'📶',label:'নেট ছিল না',text:'নেট ছিল না'},
+  {id:'power',emoji:'💡',label:'লোডশেডিং',text:'লোডশেডিং ছিল'},
+  {id:'jam',emoji:'🚦',label:'জ্যাম',text:'জ্যামে ২ ঘণ্টা আটকে ছিলাম'},
+  {id:'nani',emoji:'👵',label:'নানি অসুস্থ',text:'নানি অসুস্থ (এই মাসে ৫ম বার)'}
+];
+const BOSS_TYPES=[
+  {id:'asap',emoji:'😡',label:'শুধু “ASAP” বলে'},
+  {id:'meeting',emoji:'📋',label:'মিটিং-এর মহারাজ'},
+  {id:'midnight',emoji:'🌙',label:'মাঝরাতে মেসেজ দেয়'},
+  {id:'credit',emoji:'🏆',label:'কৃতিত্ব নিজের নামে নেয়'},
+  {id:'friendly',emoji:'🤗',label:'“আমরা ফ্যামিলি” টাইপ'}
+];
+const BOSS_LOOKS=[
+  {id:'bald',emoji:'🥸',label:'টাক + গোঁফ'},
+  {id:'curly',emoji:'🌀',label:'কোঁকড়া চুল'},
+  {id:'glasses',emoji:'🤓',label:'চশমা'},
+  {id:'slick',emoji:'💈',label:'জেল-চুল'}
+];
+const BOSS_LINES=[
+  {id:'small',emoji:'⏱️',label:'ছোট্ট কাজ',say:'একটা ছোট্ট কাজ আছে, ৫ মিনিটের!'},
+  {id:'tomorrow',emoji:'📆',label:'কালকেই লাগবে',say:'কাল সকালেই লাগবে!'},
+  {id:'family',emoji:'👨‍👩‍👧',label:'আমরা পরিবার',say:'আমরা সবাই একটা পরিবার!'},
+  {id:'incr',emoji:'💸',label:'ইনক্রিমেন্ট',say:'ইনক্রিমেন্ট? এই বছর না ভাই।'}
+];
+const ACC_DESC={headphone:'🎧 হেডফোন',sunglasses:'🕶️ সানগ্লাস',glasses:'🤓 চশমা',beard:'🧔 দাড়ি'};
+
+const EMP_SAY={
+  sleepy:'জি স্যার, শুনছি... zzz',
+  chai:'স্যার, ১০ মিনিট! শুধু চা-টা শেষ করি।',
+  fake:'Done স্যার! (কাজ এখনও শুরুই হয়নি 😅)',
+  zombie:'স্যার, রাত ২টা... আমি এখনও আছি। 🧟'
+};
+const EMP_CUSTOM_SAY=[
+  k=>`স্যার, ${k} নিয়ে একটু ব্যস্ত ছিলাম! 🙏`,
+  k=>`${k}? ওটা তো আমার স্পেশালিটি স্যার!`,
+  k=>`স্যার, ${k} না থাকলে আমি অচল!`
+];
+const EMP_INFO={
+  sleepy:{title:'চিফ মিটিং-ঘুমন্ত অফিসার',stats:[22,55,48,98,40],think:'গভীর চিন্তায় ডুবে আছে',real:'গভীর ঘুমে ডুবে আছে'},
+  chai:{title:'সিনিয়র চা-বিরতি বিশেষজ্ঞ',stats:[35,99,60,40,30],think:'রিফ্রেশ হয়ে কাজে ফিরবে',real:'চায়ের দোকানে আড্ডা চলছে'},
+  fake:{title:'“Done স্যার” বিভাগের প্রধান',stats:[18,50,96,35,85],think:'ডেডিকেটেড টিম-প্লেয়ার',real:'ফাইলটাই এখনও খোলেনি'},
+  zombie:{title:'নাইট-শিফট জম্বি ম্যানেজার',stats:[90,45,8,92,95],think:'কোম্পানির সবচেয়ে বড় সম্পদ',real:'আর একটা মেসেজ এলেই পদত্যাগ'}
+};
+const BOSS_INFO={
+  asap:{title:'চিফ ASAP অফিসার',stats:[97,40,5,60,55],think:'মাথা গরম মানুষ',real:'ASAP মানে আসলে “আমি ভুলে গিয়েছিলাম”'},
+  meeting:{title:'মিটিং-এর মহারাজ',stats:[30,99,8,55,40],think:'মিটিং ইমেইল দিয়ে হয় না কেন?',real:'মিটিং শেষে আরেকটা মিটিং ঠিক হয়'},
+  midnight:{title:'মধ্যরাতের মেসেজ মাস্টার',stats:[25,45,10,50,99],think:'রাত ১১টায় ওনার ঘুম নেই?',real:'ফোন সাইলেন্ট করলে সকালে ২৭টা মিসড কল'},
+  credit:{title:'কৃতিত্ব-চুরি বিশেষজ্ঞ',stats:[35,50,12,99,45],think:'দারুণ নেতৃত্ব!',real:'আইডিয়া আমার, প্রেজেন্টেশন ওনার'},
+  friendly:{title:'“আমরা ফ্যামিলি” প্রতিষ্ঠাতা',stats:[20,60,15,70,70],think:'কত ভালো মানুষ',real:'ফ্যামিলি মানে ওভারটাইমের টাকা নেই'}
+};
+const EMP_STAT_LABELS=['কাজের ইচ্ছা','__FOOD__','বাহানা বানানো','ঘুম-ঘুম ভাব','বসের ভয়'];
+const BOSS_STAT_LABELS=['চিল্লানো','মিটিং-প্রেম','ইনক্রিমেন্ট দেওয়ার ইচ্ছা','কৃতিত্ব নেওয়া','রাতে মেসেজ'];
+const EMP_SUGG=['ঘুমায়','গান পাগল','দাড়িওয়ালা','চশমা','রাত জাগে','ক্রিকেট পাগল','ফেসবুকে থাকে','বিরিয়ানি'];
+const BOSS_SUGG=['চিল্লায়','টাক','মিটিং পাগল','কিপটা','মাঝরাতে ফোন','কোঁকড়া চুল','সানগ্লাস পরে','গল্ফ খেলে'];
+
+const DEF_EMP='রহিম', DEF_BOSS='করিম স্যার';
+const MAX_TAGS=8, MAX_TAG_LEN=30;
+const emp={name:'',mood:'chai',look:'spiky',food:'chai',excuse:'net',tags:[]};
+const boss={name:'',type:'asap',look:'bald',line:'small',tags:[]};
+const opts={showBoss:true,showEmp:true};
+const byId=(arr,id)=>arr.find(x=>x.id===id);
+const nm=(o,d)=>(o.name.trim()||d).slice(0,24);
+
+/* ================= keyword analysis (runs fully in the browser) ================= */
+const norm=s=>String(s).toLowerCase().normalize('NFC');
+const DICT_RAW={
+  emp:{
+    mood:{
+      sleepy:['ঘুম','ঘুমা','ঘুমে','অলস','অলসত','নাক','নিদ্রা','বিছানা','হাই','ghum','ghumay','ghumai','sleep','sleepy','lazy','olos','alos','nap'],
+      chai:['চা','চায়ের','চায়ে','কফি','আড্ডা','আড্ডাবাজ','বিরতি','খাবার','খায়','খাই','খাওয়া','খাদক','পেটুক','নাস্তা','নাশতা','সিঙ্গারা','বিরিয়ানি','chai','tea','coffee','adda','break','foodie','khabar','khay','khai','snack','singara','biriyani','biryani','samosa','nasta'],
+      fake:['done','ফাঁকি','ফাকি','ফাঁকিবাজ','বাহানা','bahana','excuse','মিথ্যা','মিথ্যুক','মিথ্যে','fake','চালাক','চালবাজ','চাপা','চাপাবাজ','faki','দেরি','দেরী','deri','late','লেট','নাটক','natok','drama','ভান','lie','কাজচোর','কামচোর'],
+      zombie:['ওভারটাইম','overtime','রাত','রাতে','রাত্রে','রাত্রি','রাতভর','রাতজাগা','raat','night','ক্লান্ত','klanto','tired','burnout','workaholic','পরিশ্রমী','কাজপাগল','জম্বি','zombie','জাগে','jage','জেগে','sleepless','overwork']
+    },
+    look:{
+      spiky:['খাড়া','spiky','স্পাইকি','কাঁটা'],
+      long:['লম্বা','long','খোঁপা','bun','ঝুঁটি'],
+      cap:['টুপি','টুপিওয়ালা','cap','hat','tupi','হ্যাট'],
+      bald:['ন্যাড়া','টাক','টেকো','টাকলা','bald','nyara','takla']
+    },
+    food:{
+      chai:['চা','চায়ের','চায়ে','tea','chai','cha'],
+      coffee:['কফি','coffee','kofi','কফিখোর'],
+      singara:['সিঙ্গারা','সিংগারা','singara','samosa','সমুচা','somucha','পেঁয়াজু','চপ'],
+      biriyani:['বিরিয়ানি','বিরানি','biriyani','biryani','ভাত','খিচুড়ি','কাচ্চি','kacchi','ভুরিভোজ','পেটুক','foodie']
+    },
+    excuse:{
+      net:['নেট','নেটওয়ার্ক','ওয়াইফাই','ইন্টারনেট','net','wifi','internet','network'],
+      power:['লোডশেডিং','বিদ্যুৎ','কারেন্ট','বিজলি','power','current','loadshedding','load'],
+      jam:['জ্যাম','jam','traffic','ট্রাফিক','রিকশা','rickshaw','bus','বাস'],
+      nani:['নানি','দাদি','নানা','দাদা','nani','dadi','অসুস্থ','অসুখ','sick','খালা','মামা','চাচা']
+    },
+    acc:{
+      headphone:['গান','গানে','গানের','গানপাগল','music','headphone','হেডফোন','song','gaan','মিউজিক','রেডিও','ব্যান্ড','band'],
+      sunglasses:['cool','কুল','স্টাইলিশ','stylish','sunglass','sunglasses','সানগ্লাস','হিরো','hero','রোদচশমা','স্মার্ট','smart'],
+      glasses:['চশমা','চশমাওয়ালা','chosma','glasses','nerd','পড়ুয়া','বইপোকা','bookworm','পড়ে','পড়াশোনা','study'],
+      beard:['দাড়ি','দাঁড়ি','দাড়িওয়ালা','dari','beard','bearded']
+    }
+  },
+  boss:{
+    type:{
+      asap:['চিল্লা','চিৎকার','চিত্কার','চেঁচা','রাগ','রাগী','রাগি','রাগে','গরম','মাথাগরম','angry','shout','scream','asap','জলদি','jaldi','urgent','তাড়াহুড়ো','তাড়া','ধমক','dhomok','garam','gorom'],
+      meeting:['মিটিং','মিটিঙ','meeting','বকবক','বকে','বকা','লেকচার','lecture','ভাষণ','বক্তৃতা','প্রেজেন্টেশন','presentation','ppt','talk'],
+      midnight:['মেসেজ','message','ফোন','ফোনে','phone','call','কল','মাঝরাত','মাঝরাতে','রাত','রাতে','রাত্রে','raat','night','whatsapp','হোয়াটসঅ্যাপ','msg','মিসড'],
+      credit:['কৃতিত্ব','credit','চোর','চুরি','কিপটা','কিপ্টা','অহংকার','অহংকারী','অহঙ্কারী','ego','দেমাগ','দেমাগী','বড়াই','কৃপণ','kipta','showoff'],
+      friendly:['ফ্যামিলি','family','ভালো','valo','bhalo','friendly','হাসি','হাসে','মিষ্টি','বন্ধু','বন্ধুসুলভ','মজা','পরিবার','poribar','মায়া','hug','কিউট','cute','বন্ধুত্ব','দয়ালু']
+    },
+    look:{
+      bald:['টাক','টেকো','ন্যাড়া','টাকলা','গোঁফ','গোফ','গোঁফওয়ালা','bald','mustache','moustache','gonf','মোচ'],
+      curly:['কোঁকড়া','কোকড়া','কোঁকড়ানো','curly'],
+      glasses:['চশমা','চশমাওয়ালা','glasses','chosma'],
+      slick:['জেল','gel','slick','স্টাইল','সাজগোজ','হ্যান্ডসাম','handsome','টিপটপ','tiptop']
+    },
+    line:{
+      incr:['ইনক্রিমেন্ট','increment','বেতন','salary','বোনাস','bonus','প্রমোশন','promotion','কিপটা','কৃপণ'],
+      tomorrow:['কাল','kal','tomorrow','ডেডলাইন','deadline','আজই','today','জরুরি','জরুরী','asap','urgent'],
+      family:['ফ্যামিলি','family','পরিবার','poribar'],
+      small:['ছোট্ট','ছোট','chhoto','choto','small','quick','মিনিট','মিনিটের','সহজ','easy','minute']
+    },
+    acc:{
+      headphone:['গান','গানে','গানের','গানপাগল','music','headphone','হেডফোন','song','gaan','মিউজিক','ব্যান্ড','band'],
+      sunglasses:['cool','কুল','স্টাইলিশ','stylish','sunglass','sunglasses','সানগ্লাস','হিরো','hero','রোদচশমা','স্মার্ট','smart'],
+      beard:['দাড়ি','দাঁড়ি','দাড়িওয়ালা','dari','beard','bearded']
+    }
+  }
+};
+const DICT={};
+for(const k in DICT_RAW){ DICT[k]={}; for(const c in DICT_RAW[k]){ DICT[k][c]={}; for(const id in DICT_RAW[k][c]) DICT[k][c][id]=DICT_RAW[k][c][id].map(norm); } }
+const LISTS={emp:{mood:EMP_MOODS,look:EMP_LOOKS,food:FOODS,excuse:EXCUSES},boss:{type:BOSS_TYPES,look:BOSS_LOOKS,line:BOSS_LINES}};
+const tokenize=s=>norm(s).split(/[\s,;।\-_/.:!?()'"“”]+/).filter(Boolean);
+const mw=(tk,w)=> w.length<=3 ? tk===w : tk.startsWith(w);
+function describe(kind,c,id){
+  if(c==='acc') return ACC_DESC[id]||id;
+  const it=byId(LISTS[kind][c],id); return it?`${it.emoji} ${it.label}`:id;
+}
+function analyze(kind,st){
+  const D=DICT[kind]; const cats=Object.keys(D); const tags=st.tags||[];
+  const score={}; cats.forEach(c=>score[c]={});
+  const notes=[], customs=[];
+  tags.forEach(tag=>{
+    const toks=tokenize(tag), hits=[];
+    cats.forEach(c=>{
+      Object.keys(D[c]).forEach(id=>{
+        if(toks.some(tk=>D[c][id].some(w=>mw(tk,w)))){ score[c][id]=(score[c][id]||0)+1; hits.push({c,id,d:describe(kind,c,id)}); }
+      });
+    });
+    notes.push({kw:tag,hits});
+    if(!hits.length) customs.push({kw:tag,val:35+hash(norm(tag))%64});
+  });
+  const out={kind,notes,customs,acc:{}};
+  cats.forEach(c=>{
+    if(c==='acc'){ Object.keys(D.acc).forEach(id=>{ if(score.acc[id]>0) out.acc[id]=true; }); return; }
+    const ids=Object.keys(D[c]); const pre=st[c];
+    const order=[pre].concat(ids.filter(i=>i!==pre));
+    let best=order[0], bv=-1;
+    order.forEach(id=>{ const v=(id===pre?2:0)+3*(score[c][id]||0); if(v>bv){ bv=v; best=id; } });
+    out[c]=best;
+  });
+  return out;
+}
+
+/* ================= SVG building blocks ================= */
+const INK='#14142B';
+const S3=`stroke="${INK}" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"`;
+const S35=`stroke="${INK}" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round"`;
+const S4=`stroke="${INK}" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"`;
+const limb=(d,w,c)=>`<path d="${d}" fill="none" stroke="${INK}" stroke-width="${w+7}" stroke-linecap="round"/><path d="${d}" fill="none" stroke="${c}" stroke-width="${w}" stroke-linecap="round"/>`;
+const eyeOpen=(r,p,dx)=>[78,122].map(x=>`<circle cx="${x}" cy="102" r="${r}" fill="#fff" ${S35}/><circle cx="${x+dx}" cy="103" r="${p}" fill="${INK}"/>`).join('');
+const nose=`<ellipse cx="100" cy="114" rx="5" ry="4" fill="rgba(0,0,0,.14)"/>`;
+const ears=(skin)=>`<circle cx="52" cy="104" r="10" fill="${skin}" ${S4}/><circle cx="148" cy="104" r="10" fill="${skin}" ${S4}/>`;
+const steam=(x,y)=>[0,1,2].map(i=>{
+  const d=`M${x+i*7-7} ${y} q-6 -9 0 -17 q6 -8 0 -16`;
+  return `<g class="fx steam st${i}"><path d="${d}" fill="none" stroke="${INK}" stroke-width="7.5" stroke-linecap="round"/><path d="${d}" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round"/></g>`;
+}).join('');
+const sparkle=(x,y,i)=>`<g transform="translate(${x} ${y})"><path class="fx twinkle t${i}" d="M0 -10 L3 -3 L10 0 L3 3 L0 10 L-3 3 L-10 0 L-3 -3Z" fill="#fff" ${S3}/></g>`;
+const heartD='M0 8 C-14 -2 -10 -14 0 -8 C10 -14 14 -2 0 8Z';
+
+function foodProp(f){
+  if(f==='chai') return `<path d="M138 192 H164 L160 224 Q151 231 142 224Z" fill="#E8A24A" ${S35}/><rect x="141" y="193" width="21" height="9" fill="#fff" opacity=".7"/><path d="M164 199 q11 2 7 13 q-3 6 -9 4" fill="none" ${S35}/>${steam(151,188)}`;
+  if(f==='coffee') return `<rect x="138" y="192" width="28" height="32" rx="7" fill="#fff" ${S35}/><rect x="138" y="192" width="28" height="13" rx="6" fill="#7B4A2A" ${S35}/><path d="M166 198 q12 2 8 14 q-4 7 -10 4" fill="none" ${S35}/>${steam(152,188)}`;
+  if(f==='singara') return `<path d="M130 228 L170 228 L150 190Z" fill="#E0A82E" ${S35}/><circle cx="146" cy="217" r="2.4" fill="#9A6A0E"/><circle cx="156" cy="212" r="2.4" fill="#9A6A0E"/><circle cx="152" cy="222" r="2.4" fill="#9A6A0E"/>${steam(150,184)}`;
+  return `<ellipse cx="150" cy="228" rx="30" ry="8" fill="#fff" ${S35}/><path d="M126 226 Q130 196 150 194 Q170 196 174 226Z" fill="#F4C95D" ${S35}/><circle cx="142" cy="212" r="2.5" fill="#C97A1E"/><circle cx="156" cy="206" r="2.5" fill="#C97A1E"/><circle cx="160" cy="218" r="2.5" fill="#C97A1E"/><circle cx="146" cy="220" r="2.5" fill="#C97A1E"/>${steam(150,190)}`;
+}
+
+
+function beardSVG(hair){
+  return `<path d="M52 112 Q54 170 100 170 Q146 170 148 112 Q132 142 100 140 Q68 142 52 112Z" fill="${hair}" ${S3}/>`;
+}
+function accSVG(acc,skipGlasses){
+  let s='';
+  if(acc.glasses && !skipGlasses) s+=`<circle cx="78" cy="102" r="17" fill="#fff" fill-opacity=".3" ${S4}/><circle cx="122" cy="102" r="17" fill="#fff" fill-opacity=".3" ${S4}/><path d="M95 101 H105 M61 100 L52 96 M139 100 L148 96" fill="none" ${S4}/>`;
+  if(acc.sunglasses) s+=`<path d="M60 94 H96 V104 Q96 116 78 116 Q60 116 60 104Z" fill="${INK}" ${S3}/><path d="M104 94 H140 V104 Q140 116 122 116 Q104 116 104 104Z" fill="${INK}" ${S3}/><path d="M96 98 H104" stroke="${INK}" stroke-width="4"/><path d="M66 99 L76 99" stroke="#fff" stroke-width="3" opacity=".55" stroke-linecap="round"/><path d="M110 99 L120 99" stroke="#fff" stroke-width="3" opacity=".55" stroke-linecap="round"/>`;
+  if(acc.headphone) s+=`<path d="M50 104 Q46 34 100 34 Q154 34 150 104" fill="none" stroke="${INK}" stroke-width="10" stroke-linecap="round"/><path d="M50 104 Q46 34 100 34 Q154 34 150 104" fill="none" stroke="#FF5C8A" stroke-width="4.5" stroke-linecap="round"/><rect x="38" y="92" width="17" height="32" rx="8" fill="#FF5C8A" ${S35}/><rect x="145" y="92" width="17" height="32" rx="8" fill="#FF5C8A" ${S35}/>`;
+  return s;
+}
+
+/* ================= EMPLOYEE ================= */
+function empSVG(e){
+  const m=e.mood; const beardS=(e.acc&&e.acc.beard)?beardSVG('#2B2140'):''; const accS=accSVG(e.acc||{},false);
+  const skin = m==='zombie' ? '#B9CC8A' : '#E8A66B';
+  const hair='#2B2140';
+  let back='',front='';
+  if(e.look==='long'){
+    back=`<path d="M46 100 Q36 196 68 206 L132 206 Q164 196 154 100Z" fill="${hair}" ${S4}/>`;
+    front=`<path d="M52 94 Q56 46 100 46 Q144 46 148 94 Q126 68 100 74 Q74 68 52 94Z" fill="${hair}" ${S4}/>`;
+  } else if(e.look==='spiky'){
+    front=`<path d="M50 92 L54 54 L70 70 L78 36 L94 62 L106 30 L120 62 L136 38 L142 70 L152 56 L150 92 Q126 66 100 70 Q74 66 50 92Z" fill="${hair}" ${S4}/>`;
+  } else if(e.look==='cap'){
+    front=`<path d="M50 90 Q52 44 100 44 Q148 44 150 90Z" fill="#FF5C8A" ${S4}/><path d="M92 84 L170 90 Q174 100 150 100 L92 94Z" fill="#E03E6D" ${S4}/><circle cx="100" cy="44" r="5" fill="#FFD23F" ${S3}/>`;
+  } else {
+    front=`<path d="M90 54 q4 -14 9 0 M101 52 q5 -16 10 0" stroke="${INK}" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M74 62 Q86 54 98 58" stroke="#fff" stroke-width="5" opacity=".55" fill="none" stroke-linecap="round"/>`;
+  }
+
+  let eyes='',mouth='',extra='',fx='';
+  if(m==='sleepy'){
+    eyes=`<path d="M66 102 Q78 113 90 102" fill="none" ${S4}/><path d="M110 102 Q122 113 134 102" fill="none" ${S4}/>`;
+    mouth=`<ellipse cx="100" cy="134" rx="7" ry="9" fill="#7A2E3A" ${S35}/><path class="drool" d="M108 141 q5 9 0 17" fill="none" stroke="#7CC8FF" stroke-width="5" stroke-linecap="round"/>`;
+    fx=['Z','z','Z'].map((c,i)=>`<text class="fx zz z${i}" x="${138+i*10}" y="${72-i*14}" font-family="'Baloo Da 2',sans-serif" font-weight="800" font-size="${26-i*4}" fill="#fff" stroke="${INK}" stroke-width="5" paint-order="stroke">${c}</text>`).join('');
+  } else if(m==='chai'){
+    eyes=`<path d="M66 106 Q78 90 90 106" fill="none" ${S4}/><path d="M110 106 Q122 90 134 106" fill="none" ${S4}/>`;
+    mouth=`<path d="M76 124 Q100 152 124 124Z" fill="#7A2E3A" ${S35}/><ellipse cx="100" cy="132" rx="9" ry="5" fill="#FF7A8A"/>`;
+    extra=`<circle cx="62" cy="122" r="7" fill="#FF5C8A" opacity=".55"/><circle cx="138" cy="122" r="7" fill="#FF5C8A" opacity=".55"/>`;
+  } else if(m==='fake'){
+    eyes=eyeOpen(11,3.5,0)+`<path d="M66 82 Q78 75 90 82" fill="none" ${S4}/><path d="M110 82 Q122 75 134 82" fill="none" ${S4}/>`;
+    mouth=`<path d="M76 124 Q100 150 124 124Z" fill="#fff" ${S35}/><path d="M100 126 V138 M88 126 V134 M112 126 V134" stroke="${INK}" stroke-width="2.5" fill="none"/>`;
+    fx=`<path class="fx sweat" d="M152 78 q-8 14 0 18 q8 -4 0 -18Z" fill="#7CC8FF" ${S3}/><g class="fx pop"><rect x="120" y="18" width="68" height="28" rx="14" fill="#fff" ${S35}/><text x="154" y="38" text-anchor="middle" font-family="'Baloo Da 2',sans-serif" font-weight="800" font-size="16" fill="#0E9F63">Done ✓</text></g>`;
+  } else {
+    eyes=[78,122].map(x=>`<circle cx="${x}" cy="102" r="11" fill="#fff" ${S35}/><path d="M${x-6} ${96} L${x+6} ${108} M${x+6} 96 L${x-6} 108" stroke="${INK}" stroke-width="3.5" stroke-linecap="round"/>`).join('')
+      +`<ellipse cx="78" cy="117" rx="12" ry="5" fill="#6B4C9A" opacity=".45"/><ellipse cx="122" cy="117" rx="12" ry="5" fill="#6B4C9A" opacity=".45"/><path d="M64 82 L90 88 M136 82 L110 88" stroke="${INK}" stroke-width="4" stroke-linecap="round"/>`;
+    mouth=`<path d="M78 134 Q86 126 94 134 T110 134 T122 134" fill="none" ${S4}/>`;
+    fx=`<g class="fx floaty"><rect x="122" y="22" width="66" height="26" rx="13" fill="${INK}"/><text x="155" y="40" text-anchor="middle" font-family="'Baloo Da 2',sans-serif" font-weight="800" font-size="15" fill="#7CF5C0">2:00 AM</text></g>`;
+  }
+
+  const shirt='#3DDC97';
+  return `<svg class="char m-${m}" viewBox="0 0 200 260" role="img" aria-label="কর্মচারীর কার্টুন"><g class="all">
+  <rect x="88" y="138" width="24" height="34" fill="${skin}" ${S4}/>
+  <path d="M40 260 Q40 162 100 162 Q160 162 160 260Z" fill="${shirt}" ${S4}/>
+  <path d="M82 164 Q100 184 118 164" fill="none" ${S35}/>
+  <path d="M84 168 L98 210 M116 168 L102 210" stroke="#FF5C8A" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <rect x="88" y="208" width="24" height="30" rx="4" fill="#fff" ${S3}/><circle cx="100" cy="218" r="4.5" fill="${INK}"/><path d="M92 228 h16 M92 233 h10" stroke="${INK}" stroke-width="2.5" stroke-linecap="round"/>
+  ${limb('M52 178 Q30 204 46 234',14,skin)}
+  ${limb('M148 178 Q176 198 152 216',14,skin)}
+  ${foodProp(e.food)}
+  <g class="head">
+    ${back}${ears(skin)}
+    <ellipse cx="100" cy="100" rx="48" ry="50" fill="${skin}" ${S4}/>
+    ${nose}${beardS}${front}${eyes}${mouth}${extra}${accS}
+  </g>
+  ${fx}
+  </g></svg>`;
+}
+
+/* ================= BOSS ================= */
+function bossSVG(b){
+  const t=b.type; const beardS=(b.acc&&b.acc.beard)?beardSVG('#2B2140'):''; const accS=accSVG(b.acc||{},true);
+  const skin=({asap:'#E4684E',midnight:'#8DB3E6'})[t]||'#D08A55';
+  const hair='#2B2140', suit='#2B2F77';
+  let front='',mus='',glass='';
+  if(b.look==='bald'){
+    front=`<path d="M54 100 Q44 82 56 68 Q56 86 64 98Z" fill="${hair}" ${S3}/><path d="M146 100 Q156 82 144 68 Q144 86 136 98Z" fill="${hair}" ${S3}/><path d="M76 60 Q88 52 100 55" stroke="#fff" stroke-width="5" opacity=".55" fill="none" stroke-linecap="round"/>`;
+    mus=`<path d="M70 122 Q86 110 100 120 Q114 110 130 122 Q122 134 100 127 Q78 134 70 122Z" fill="${hair}" ${S3}/>`;
+  } else if(b.look==='curly'){
+    front=[[60,72],[78,57],[100,51],[122,57],[140,72],[50,92],[150,92]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="16" fill="${hair}" ${S3}/>`).join('');
+  } else if(b.look==='glasses'){
+    front=`<path d="M52 90 Q54 46 102 47 Q148 48 148 90 Q132 62 92 66 Q68 68 52 90Z" fill="${hair}" ${S3}/>`;
+    glass=`<circle cx="78" cy="102" r="18" fill="#fff" fill-opacity=".3" ${S4}/><circle cx="122" cy="102" r="18" fill="#fff" fill-opacity=".3" ${S4}/><path d="M96 100 H104 M60 100 L50 96 M140 100 L150 96" fill="none" ${S4}/>`;
+  } else {
+    front=`<path d="M52 90 Q50 44 100 42 Q150 44 148 90 Q130 60 100 64 Q74 62 52 90Z" fill="#1F1F2E" ${S3}/><path d="M80 52 Q96 46 116 52" stroke="#fff" stroke-width="4" opacity=".5" fill="none" stroke-linecap="round"/>`;
+  }
+
+  let brows='',eyes='',mouth='',fx='',rightArm='';
+  const leftArm=`${limb('M50 180 Q26 208 44 236',16,suit)}<circle cx="44" cy="239" r="11" fill="${skin}" ${S35}/>`;
+
+  if(t==='asap'){
+    brows=`<path d="M62 76 L94 91 M138 76 L106 91" stroke="${INK}" stroke-width="7" stroke-linecap="round"/>`;
+    eyes=eyeOpen(9,3.5,0);
+    mouth=`<g class="fx shout"><path d="M72 130 Q100 168 128 130Z" fill="#7A2E3A" ${S35}/><path d="M78 131 H122 L120 138 H80Z" fill="#fff"/></g><path d="M136 64 l7 5 l-7 5 l7 5" stroke="#B0102E" stroke-width="3.5" fill="none" stroke-linecap="round"/>`;
+    fx=[[30,96],[170,96],[22,86],[178,86]].map(([x,y],i)=>`<g class="fx puff p${i}"><circle cx="${x}" cy="${y}" r="9" fill="#fff" ${S3}/></g>`).join('');
+    rightArm=`<g class="point">${limb('M150 180 Q184 172 176 138',16,suit)}${limb('M176 128 V108',8,skin)}<circle cx="176" cy="132" r="12" fill="${skin}" ${S35}/></g>`;
+  } else if(t==='meeting'){
+    brows=`<path d="M64 84 Q78 76 92 84 M108 84 Q122 76 136 84" fill="none" stroke="${INK}" stroke-width="4.5" stroke-linecap="round"/>`;
+    eyes=eyeOpen(11,4.5,0);
+    mouth=`<g class="fx talk"><ellipse cx="100" cy="140" rx="12" ry="11" fill="#7A2E3A" ${S35}/><ellipse cx="100" cy="146" rx="7" ry="4" fill="#E8607A"/></g>`;
+    rightArm=`${limb('M150 180 Q166 198 152 212',16,suit)}<rect x="144" y="176" width="36" height="46" rx="4" fill="#fff" ${S35}/><rect x="153" y="171" width="18" height="9" rx="3" fill="#FFD23F" ${S3}/><path d="M150 192 h24 M150 200 h24 M150 208 h16" stroke="${INK}" stroke-width="2.5" stroke-linecap="round"/><circle cx="150" cy="214" r="11" fill="${skin}" ${S35}/>`;
+    fx=`<g class="fx tick"><circle cx="168" cy="44" r="17" fill="#fff" ${S35}/><path d="M168 44 V33 M168 44 L176 49" stroke="${INK}" stroke-width="3.5" stroke-linecap="round" fill="none"/></g>`;
+  } else if(t==='midnight'){
+    brows=`<path d="M64 82 L92 86 M136 82 L108 86" stroke="${INK}" stroke-width="5" stroke-linecap="round"/>`;
+    eyes=[78,122].map(x=>`<circle cx="${x}" cy="102" r="12" fill="#fff" ${S35}/><circle cx="${x}" cy="102" r="2.8" fill="${INK}"/>`).join('')
+      +`<ellipse cx="78" cy="118" rx="13" ry="5" fill="#4B3B8F" opacity=".5"/><ellipse cx="122" cy="118" rx="13" ry="5" fill="#4B3B8F" opacity=".5"/>`;
+    mouth=`<path d="M80 138 Q100 152 122 134" fill="none" ${S4}/><path d="M92 143 l3 6 l5 -5" fill="#fff" ${S3}/>`;
+    rightArm=`${limb('M150 180 Q166 198 156 214',16,suit)}<circle class="fx glow" cx="158" cy="196" r="28" fill="#8DF5FF"/><rect x="146" y="176" width="26" height="44" rx="6" fill="${INK}" ${S35}/><rect x="150" y="182" width="18" height="30" rx="2" fill="#8DF5FF"/><path d="M153 190 h12 M153 196 h8 M153 202 h10" stroke="${INK}" stroke-width="2.5" stroke-linecap="round"/><circle cx="158" cy="216" r="10" fill="${skin}" ${S35}/>`;
+    fx=`<text x="16" y="62" font-size="34">🌙</text><text x="150" y="58" font-size="16" class="fx twinkle t1">✨</text><g class="fx ting"><rect x="112" y="150" width="54" height="24" rx="12" fill="#fff" ${S3}/><text x="139" y="167" text-anchor="middle" font-family="'Baloo Da 2',sans-serif" font-weight="800" font-size="14" fill="${INK}">টিং!</text></g>`;
+  } else if(t==='credit'){
+    brows=`<path d="M64 88 L92 84 M108 78 Q122 72 136 80" fill="none" stroke="${INK}" stroke-width="5" stroke-linecap="round"/>`;
+    eyes=[78,122].map(x=>`<circle cx="${x}" cy="102" r="11" fill="#fff" ${S35}/><circle cx="${x+4}" cy="104" r="4.5" fill="${INK}"/><path d="M${x-12} 102 A12 12 0 0 1 ${x+12} 102Z" fill="${skin}" ${S35}/>`).join('');
+    mouth=`<path d="M80 136 Q104 148 124 126" fill="none" ${S4}/><path d="M124 126 q5 -2 6 -8" fill="none" stroke="${INK}" stroke-width="3" stroke-linecap="round"/>`;
+    rightArm=`${limb('M150 182 Q172 200 160 220',16,suit)}<path d="M142 168 H174 V188 Q174 206 158 206 Q142 206 142 188Z" fill="#FFD23F" ${S35}/><path d="M142 174 q-12 0 -9 12 q3 8 10 8 M174 174 q12 0 9 12 q-3 8 -10 8" fill="none" ${S35}/><rect x="154" y="205" width="8" height="10" fill="#E0A82E" ${S3}/><rect x="145" y="214" width="26" height="8" rx="2" fill="#E0A82E" ${S3}/><path d="M158 174 l3 7 l7 1 l-5 5 l1 7 l-6 -4 l-6 4 l1 -7 l-5 -5 l7 -1z" fill="#fff" ${S3}/><circle cx="159" cy="222" r="10" fill="${skin}" ${S35}/>`;
+    fx=sparkle(184,160,0)+sparkle(132,158,1)+sparkle(176,208,2);
+  } else {
+    brows='';
+    eyes=[78,122].map(x=>`<g transform="translate(${x} 102) scale(1.25)"><path class="fx beat" d="${heartD}" fill="#FF3B5C" ${S3}/></g>`).join('');
+    mouth=`<path d="M74 130 Q100 164 126 130Z" fill="#7A2E3A" ${S35}/><path d="M80 131 H120 L118 138 H82Z" fill="#fff"/>`;
+    fx=`<g transform="translate(26 80)"><path class="fx hf" d="${heartD}" fill="#FF3B5C" ${S3}/></g><g transform="translate(176 70)"><path class="fx hf h1" d="${heartD}" fill="#FF3B5C" ${S3}/></g><g transform="translate(160 36)"><path class="fx hf h2" d="${heartD}" fill="#FF3B5C" ${S3}/></g>`;
+    rightArm=`<g class="wave">${limb('M150 180 Q184 172 176 140',16,suit)}<circle cx="176" cy="132" r="13" fill="${skin}" ${S35}/></g>`;
+  }
+  const blush = t==='friendly' ? `<circle cx="62" cy="122" r="7" fill="#FF5C8A" opacity=".5"/><circle cx="138" cy="122" r="7" fill="#FF5C8A" opacity=".5"/>` : '';
+
+  return `<svg class="char m-${t}" viewBox="0 0 200 260" role="img" aria-label="বসের কার্টুন"><g class="all">
+  <rect x="86" y="138" width="28" height="34" fill="${skin}" ${S4}/>
+  <path d="M26 260 Q26 166 100 166 Q174 166 174 260Z" fill="${suit}" ${S4}/>
+  <path d="M80 167 L100 206 L120 167Z" fill="#fff" ${S35}/>
+  <path d="M94 180 H106 L103 190 H97Z" fill="#FF3B5C" ${S3}/><path d="M97 190 L90 206 L100 248 L110 206 L103 190Z" fill="#FF3B5C" ${S3}/>
+  <path d="M80 167 L64 214 M120 167 L136 214" stroke="${INK}" stroke-width="3" fill="none" stroke-linecap="round"/>
+  ${leftArm}${rightArm}
+  <g class="head">
+    ${ears(skin)}
+    <ellipse cx="100" cy="100" rx="49" ry="51" fill="${skin}" ${S4}/>
+    ${nose}${beardS}${front}${brows}${eyes}${mouth}${mus}${glass}${blush}${accS}
+  </g>
+  ${fx}
+  </g></svg>`;
+}
+
+/* ================= form ================= */
+function chips(group,key,items,cur){
+  return items.map(it=>`<label class="chip"><input type="radio" name="${group}-${key}" value="${it.id}" ${it.id===cur?'checked':''}><span>${it.emoji} ${esc(it.label)}</span></label>`).join('');
+}
+function q(label,inner,id){ return `<div role="group" aria-labelledby="${id}"><div class="qlabel" id="${id}">${label}</div><div class="chips">${inner}</div></div>`; }
+function kwBlock(kind,sugg){
+  return `<div class="kw"><label class="qlabel" for="${kind}Kw" style="display:block">✍️ নিজের ফিচার লেখো (যত খুশি)</label>
+    <div class="kwrow"><input type="text" id="${kind}Kw" maxlength="${MAX_TAG_LEN}" placeholder="যেমন: ${esc(sugg[0])}, ${esc(sugg[1])}" autocomplete="off" enterkeyhint="done"><button type="button" class="kwadd" data-kind="${kind}">যোগ</button></div>
+    <div class="tags" id="${kind}Tags"></div>
+    <div class="sgs"><small>ট্যাপ করে দেখো:</small>${sugg.slice(0,6).map(s=>`<button type="button" class="sg" data-kind="${kind}" data-kw="${esc(s)}">${esc(s)}</button>`).join('')}</div>
+    <p class="hint" id="${kind}Hint"></p></div>`;
+}
+function buildForms(){
+  $('#empForm').innerHTML =
+    `<div class="field"><label class="qlabel" for="empName" style="display:block">কর্মচারীর নাম</label><input type="text" id="empName" maxlength="24" value="${esc(emp.name)}" placeholder="যেমন: ${DEF_EMP}" autocomplete="off"></div>`
+    + q('কেমন কর্মচারী?',chips('emp','mood',EMP_MOODS,emp.mood),'q-e1')
+    + q('চেহারা কেমন?',chips('emp','look',EMP_LOOKS,emp.look),'q-e2')
+    + q('সবচেয়ে প্রিয় খাবার বা পানীয়?',chips('emp','food',FOODS,emp.food),'q-e3')
+    + q('দেরি করলে প্রথম বাহানা?',chips('emp','excuse',EXCUSES,emp.excuse),'q-e4')
+    + kwBlock('emp',EMP_SUGG);
+  $('#bossForm').innerHTML =
+    `<div class="field"><label class="qlabel" for="bossName" style="display:block">বসের নাম</label><input type="text" id="bossName" maxlength="24" value="${esc(boss.name)}" placeholder="যেমন: ${DEF_BOSS}" autocomplete="off"></div>`
+    + q('কেমন বস?',chips('boss','type',BOSS_TYPES,boss.type),'q-b1')
+    + q('বসের চেহারা?',chips('boss','look',BOSS_LOOKS,boss.look),'q-b2')
+    + q('বসের প্রিয় ডায়ালগ?',chips('boss','line',BOSS_LINES,boss.line),'q-b3')
+    + kwBlock('boss',BOSS_SUGG);
+  tagsUI('emp'); tagsUI('boss');
+}
+
+/* ---- keyword tags ---- */
+const stOf=k=>k==='emp'?emp:boss;
+function tagsUI(kind){
+  const st=stOf(kind), a=analyze(kind,st);
+  $('#'+kind+'Tags').innerHTML=st.tags.map((t,i)=>{
+    const ok=a.notes[i].hits.length>0;
+    return `<span class="tag ${ok?'ok':'cu'}">${ok?'✓':'✨'} ${esc(t)}<button type="button" class="tagx" data-kind="${kind}" data-i="${i}" aria-label="${esc(t)} মুছে ফেলো">×</button></span>`;
+  }).join('');
+  $('#'+kind+'Hint').textContent = st.tags.length
+    ? '🔍 বুঝেছি: '+a.notes.map(n=>n.kw+' → '+(n.hits.length?n.hits.map(h=>h.d).join(' + '):'✨ কাস্টম স্ট্যাট')).join(' · ')
+    : 'যা খুশি লেখো: স্বভাব, শখ, অভ্যাস, চেহারা। আমি বিশ্লেষণ করে কার্টুনে বসিয়ে দেব। না চিনলে সেটা কাস্টম স্ট্যাট হয়ে যাবে।';
+}
+function addTag(kind,raw){
+  const st=stOf(kind);
+  const t=String(raw||'').replace(/\s+/g,' ').trim().slice(0,MAX_TAG_LEN);
+  if(!t) return false;
+  if(st.tags.length>=MAX_TAGS){ toast('সর্বোচ্চ '+MAX_TAGS+'টা ফিচার দেওয়া যাবে'); return false; }
+  if(st.tags.some(x=>norm(x)===norm(t))) return false;
+  st.tags.push(t); tagsUI(kind); renderStage(kind); return true;
+}
+function flushPending(){
+  ['emp','boss'].forEach(k=>{ const el=$('#'+k+'Kw'); if(el&&el.value.trim()){ if(addTag(k,el.value)) el.value=''; } });
+}
+
+/* ================= stage ================= */
+function bubble(el,text){
+  el.textContent=text; el.classList.remove('bpop'); void el.offsetWidth; el.classList.add('bpop');
+}
+function empSay(a){
+  if(a.customs.length){ const k=a.customs[0].kw; return EMP_CUSTOM_SAY[hash(norm(k))%EMP_CUSTOM_SAY.length](k); }
+  return EMP_SAY[a.mood];
+}
+function renderStage(which){
+  if(which!=='boss'){ const a=analyze('emp',emp); $('#empFig').innerHTML=empSVG(a); bubble($('#empBubble'),empSay(a)); }
+  if(which!=='emp'){ const b=analyze('boss',boss); $('#bossFig').innerHTML=bossSVG(b); bubble($('#bossBubble'),byId(BOSS_LINES,b.line).say); }
+  updateTags();
+}
+function updateTags(){ $('#empTag').textContent=nm(emp,DEF_EMP); $('#bossTag').textContent=nm(boss,DEF_BOSS); }
+
+/* ================= result data ================= */
+function computeResult(){
+  const eE=analyze('emp',emp), eB=analyze('boss',boss);
+  const seed=[eE.mood,eE.look,eE.food,eE.excuse,Object.keys(eE.acc).sort().join(),emp.tags.join('|'),eB.type,eB.look,eB.line,Object.keys(eB.acc).sort().join(),boss.tags.join('|')].join('#');
+  const rnd=rng(hash(seed));
+  const jit=v=>Math.max(3,Math.min(100,Math.round(v+(rnd()*16-8))));
+  const ei=EMP_INFO[eE.mood], bi=BOSS_INFO[eB.type];
+  const food=byId(FOODS,eE.food), exc=byId(EXCUSES,eE.excuse), line=byId(BOSS_LINES,eB.line);
+  const eStats=ei.stats.map((v,i)=>({l:EMP_STAT_LABELS[i]==='__FOOD__'?food.label+'-প্রেম':EMP_STAT_LABELS[i],v:jit(v)}));
+  const bStats=bi.stats.map((v,i)=>({l:BOSS_STAT_LABELS[i],v:jit(v)}));
+  eE.customs.slice(0,3).forEach(c=>eStats.push({l:'✨ '+c.kw,v:c.val,cu:true}));
+  eB.customs.slice(0,3).forEach(c=>bStats.push({l:'✨ '+c.kw,v:c.val,cu:true}));
+  const score=5+Math.floor(rnd()*90);
+  return {eE,eB,ei,bi,food,exc,line,eStats,bStats,score,verdict:verdictFor(score)};
+}
+function verdictFor(s){
+  return s<20?'চাকরি বাঁচাতে এখনই প্রার্থনা শুরু করুন 🙏'
+    : s<45?'টিকে যাবে... তবে কান্না আর চায়ের জোরে ☕'
+    : s<75?'চলে যাবে, শুধু ইনক্রিমেন্ট ছাড়া 😅'
+    : 'অফিসের সেরা জুটি! (সন্দেহজনকভাবে ভালো) 🤝';
+}
+const dispE=()=>opts.showEmp?nm(emp,DEF_EMP):'🙈 গোপন কর্মচারী';
+const dispB=()=>opts.showBoss?nm(boss,DEF_BOSS):'🤫 গোপন বস';
+
+function statsHTML(items,color){
+  return items.map(s=>`<div class="stat"><div class="stat-top"><span>${esc(s.l)}</span><b>${s.v}%</b></div><div class="track"><div class="fill" data-w="${s.v}" style="background:${s.cu?'#FFD23F':color}"></div></div></div>`).join('');
+}
+function analysisList(kind,a){
+  if(!a.notes.length) return '<li>কোনো ফিচার লেখোনি, তাই অপশন থেকেই বানিয়েছি।</li>';
+  return a.notes.map(n=>`<li><b>${esc(n.kw)}</b> → ${n.hits.length?esc(n.hits.map(h=>h.d).join(' + ')):'✨ নতুন কাস্টম স্ট্যাট'}</li>`).join('');
+}
+
+function renderResultPage(){
+  const R=computeResult();
+  const {eE,eB,ei,bi,food,exc,line}=R;
+  const accBadges=a=>Object.keys(a.acc).map(k=>`<span class="badge">${esc(ACC_DESC[k])}</span>`).join('');
+  $('#result').innerHTML=`
+  <h2 class="big">প্রোফাইল রেডি! 🎉</h2>
+  <div class="cards">
+    <article class="card reveal" aria-label="কর্মচারীর প্রোফাইল">
+      <div class="photo e"><span class="stamp">রেডি ✓</span><div class="fig">${empSVG(eE)}</div></div>
+      <div class="cbody">
+        <h3 id="cardEN">${esc(dispE())}</h3>
+        <p class="jobtitle">${esc(ei.title)}</p>
+        <div class="badges"><span class="badge">${food.emoji} প্রিয়: ${esc(food.label)}</span><span class="badge">${exc.emoji} বাহানা: ${esc(exc.text)}</span>${accBadges(eE)}</div>
+        <div class="stats">${statsHTML(R.eStats,'#3DDC97')}</div>
+        <dl class="said">
+          <div class="t"><dt>বস ভাবে</dt><dd>${esc(ei.think)}</dd></div>
+          <div class="r"><dt>আসলে</dt><dd>${esc(ei.real)}</dd></div>
+        </dl>
+      </div>
+    </article>
+    <article class="card reveal r2" aria-label="বসের প্রোফাইল">
+      <div class="photo b"><span class="stamp">রেডি ✓</span><div class="fig">${bossSVG(eB)}</div></div>
+      <div class="cbody">
+        <h3 id="cardBN">${esc(dispB())}</h3>
+        <p class="jobtitle">${esc(bi.title)}</p>
+        <div class="badges">${accBadges(eB)||'<span class="badge">💼 অফিসের মালিকের মতো ভাব</span>'}</div>
+        <div class="stats">${statsHTML(R.bStats,'#FF5C8A')}</div>
+        <dl class="said">
+          <div class="t"><dt>কর্মচারী ভাবে</dt><dd>${esc(bi.think)}</dd></div>
+          <div class="r"><dt>আসলে</dt><dd>${esc(bi.real)}</dd></div>
+        </dl>
+        <p class="quote">“${esc(line.say)}”</p>
+      </div>
+    </article>
+  </div>
+
+  <section class="match" aria-label="ম্যাচ মিটার">
+    <div class="lbl" id="matchLbl"></div>
+    <div class="pct">${R.score}%</div>
+    <div class="mtrack"><div class="mfill" data-w="${R.score}"></div></div>
+    <div class="verdict">${R.verdict}</div>
+  </section>
+
+  <section class="panel export" aria-labelledby="expH">
+    <h2 id="expH" style="background:var(--yellow)">📸 পোস্ট করার জন্য PNG</h2>
+    <div class="body">
+      <div class="chips">
+        <label class="chip"><input type="checkbox" id="optBoss" ${opts.showBoss?'checked':''}><span>🤵 বসের নাম দেখাও</span></label>
+        <label class="chip"><input type="checkbox" id="optEmp" ${opts.showEmp?'checked':''}><span>👷 কর্মচারীর নাম দেখাও</span></label>
+      </div>
+      <p class="hint" style="margin-top:-6px">নাম বন্ধ করলে ছবিতে, ওপরের কার্ডে আর শেয়ার লিংকে আসল নাম থাকবে না, “গোপন” লেখা আসবে।</p>
+      <div class="posterwrap">
+        <img id="posterImg" alt="ডাউনলোডের জন্য প্রোফাইল ছবির প্রিভিউ" width="480" height="600">
+        <div class="pstatus" id="pStatus" aria-live="polite">ছবি তৈরি হচ্ছে...</div>
+      </div>
+      <div class="actions">
+        <button class="btn" id="dlBtn" type="button">⬇️ PNG ডাউনলোড</button>
+        <button class="btn" id="shareBtn" type="button" hidden>📤 শেয়ার</button>
+        <button class="btn" id="linkBtn" type="button">🔗 লিংক কপি</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel export" aria-labelledby="anH">
+    <h2 id="anH" style="background:#8EE6FF">🔍 তোমার ফিচারের বিশ্লেষণ</h2>
+    <div class="body anal">
+      <div><h3>👷 কর্মচারী</h3><ul>${analysisList('emp',eE)}</ul><p class="fin">চূড়ান্ত: ${esc(describe('emp','mood',eE.mood))}</p></div>
+      <div><h3>🤵 বস</h3><ul>${analysisList('boss',eB)}</ul><p class="fin">চূড়ান্ত: ${esc(describe('boss','type',eB.type))}</p></div>
+    </div>
+  </section>`;
+  updateMatchLabel();
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    document.querySelectorAll('#result [data-w]').forEach(el=>{
+      const v=+el.dataset.w; el.style.width=v+'%'; if(v<=3) el.classList.add('zero');
+    });
+  }));
+}
+function updateMatchLabel(){ const el=$('#matchLbl'); if(el) el.textContent=`${dispE()} আর ${dispB()}-এর ম্যাচ`; }
+
+/* ================= share-link state (no server needed) ================= */
+const b64u={
+  enc:s=>btoa(unescape(encodeURIComponent(s))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,''),
+  dec:s=>decodeURIComponent(escape(atob(s.replace(/-/g,'+').replace(/_/g,'/'))))
+};
+function encodeState(){
+  const o={v:1,
+    e:{n:opts.showEmp?emp.name:'',m:emp.mood,l:emp.look,f:emp.food,x:emp.excuse,t:emp.tags},
+    b:{n:opts.showBoss?boss.name:'',t:boss.type,l:boss.look,s:boss.line,k:boss.tags},
+    o:[opts.showBoss?1:0,opts.showEmp?1:0]};
+  return b64u.enc(JSON.stringify(o));
+}
+function decodeState(code){
+  try{
+    const o=JSON.parse(b64u.dec(code));
+    const ok=(list,id,def)=>list.some(x=>x.id===id)?id:def;
+    const tg=a=>Array.isArray(a)?a.filter(x=>typeof x==='string').map(x=>x.replace(/\s+/g,' ').trim().slice(0,MAX_TAG_LEN)).filter(Boolean).slice(0,MAX_TAGS):[];
+    const nmv=s=>typeof s==='string'?s.slice(0,24):'';
+    emp.name=nmv(o.e.n); emp.mood=ok(EMP_MOODS,o.e.m,'chai'); emp.look=ok(EMP_LOOKS,o.e.l,'spiky'); emp.food=ok(FOODS,o.e.f,'chai'); emp.excuse=ok(EXCUSES,o.e.x,'net'); emp.tags=tg(o.e.t);
+    boss.name=nmv(o.b.n); boss.type=ok(BOSS_TYPES,o.b.t,'asap'); boss.look=ok(BOSS_LOOKS,o.b.l,'bald'); boss.line=ok(BOSS_LINES,o.b.s,'small'); boss.tags=tg(o.b.k);
+    opts.showBoss=!(o.o&&o.o[0]===0); opts.showEmp=!(o.o&&o.o[1]===0);
+    return true;
+  }catch(e){ return false; }
+}
+
+/* ================= PNG poster ================= */
+const EXPORT_CSS='.steam{opacity:.95}.puff{opacity:.9}.zz{opacity:1}.hf{opacity:1}.ting{opacity:1}.glow{opacity:.35}';
+function svgToImg(svg,w,h){
+  const s=svg.replace('<svg ',`<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" `).replace('<g class="all">',`<style>${EXPORT_CSS}</style><g class="all">`);
+  return new Promise((res,rej)=>{ const im=new Image(); im.onload=()=>res(im); im.onerror=rej; im.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(s); });
+}
+function rr(x,px,py,w,h,r){
+  x.beginPath(); x.moveTo(px+r,py); x.arcTo(px+w,py,px+w,py+h,r); x.arcTo(px+w,py+h,px,py+h,r); x.arcTo(px,py+h,px,py,r); x.arcTo(px,py,px+w,py,r); x.closePath();
+}
+function wrapLines(x,text,maxW){
+  const words=String(text).split(/\s+/), lines=[]; let cur='';
+  for(const w of words){ const t=cur?cur+' '+w:w; if(x.measureText(t).width>maxW&&cur){ lines.push(cur); cur=w; } else cur=t; }
+  if(cur) lines.push(cur); return lines;
+}
+function fitBlock(x,text,maxW,maxLines,size,min,weight,fam){
+  let s=size;
+  for(;;){ x.font=`${weight} ${s}px ${fam}`; const L=wrapLines(x,text,maxW); if(L.length<=maxLines||s<=min) return {lines:L.slice(0,maxLines),size:s}; s-=2; }
+}
+function fitOne(x,text,maxW,size,min,weight,fam){
+  let s=size; x.font=`${weight} ${s}px ${fam}`;
+  while(x.measureText(text).width>maxW&&s>min){ s-=2; x.font=`${weight} ${s}px ${fam}`; }
+}
+async function loadFonts(){
+  try{
+    await Promise.race([
+      Promise.all([document.fonts.load("800 60px 'Baloo Da 2'",'চাকরি'),document.fonts.load("600 30px 'Hind Siliguri'",'অআকখ')]),
+      new Promise(r=>setTimeout(r,2500))
+    ]);
+  }catch(e){}
+}
+async function renderPoster(){
+  const R=computeResult();
+  const W=1080,H=1350;
+  const c=document.createElement('canvas'); c.width=W; c.height=H;
+  const x=c.getContext('2d');
+  await loadFonts();
+  const FD="'Baloo Da 2','Hind Siliguri',sans-serif", FB="'Hind Siliguri','Noto Sans Bengali',sans-serif";
+  const [imgE,imgB]=await Promise.all([svgToImg(empSVG(R.eE),380,494),svgToImg(bossSVG(R.eB),380,494)]);
+
+  x.fillStyle='#3340F2'; x.fillRect(0,0,W,H);
+  x.fillStyle='rgba(255,255,255,.08)';
+  for(let r=0,yy=14;yy<H;yy+=30,r++) for(let xx=(r%2?29:14);xx<W;xx+=30){ x.beginPath(); x.arc(xx,yy,3.5,0,6.2832); x.fill(); }
+
+  x.textAlign='center'; x.textBaseline='alphabetic'; x.lineJoin='round';
+  const title='চাকরির সার্কাস';
+  x.font=`800 104px ${FD}`; x.lineWidth=20; x.strokeStyle=INK; x.fillStyle=INK;
+  x.save(); x.translate(7,8); x.strokeText(title,W/2,140); x.fillText(title,W/2,140); x.restore();
+  x.strokeText(title,W/2,140); x.fillStyle='#FFD23F'; x.fillText(title,W/2,140);
+  x.font=`600 34px ${FB}`; x.fillStyle='#fff'; x.fillText('বস vs কর্মচারী — কার্টুন প্রোফাইল',W/2,196);
+
+  const y0=225, pw=480, ph=850;
+  function panel(px,color,img,say,name,jobtitle,tags){
+    x.fillStyle=INK; rr(x,px+10,y0+10,pw,ph,36); x.fill();
+    x.fillStyle=color; rr(x,px,y0,pw,ph,36); x.fill();
+    x.save(); rr(x,px,y0,pw,ph,36); x.clip();
+    x.fillStyle='rgba(20,20,43,.12)';
+    for(let r=0,yy=y0+10;yy<y0+ph;yy+=26,r++) for(let xx=px+(r%2?24:11);xx<px+pw;xx+=26){ x.beginPath(); x.arc(xx,yy,2.8,0,6.2832); x.fill(); }
+    x.restore();
+    x.lineWidth=8; x.strokeStyle=INK; rr(x,px,y0,pw,ph,36); x.stroke();
+
+    const cx=px+pw/2, bx=px+28, by=y0+26, bw=pw-56, bh=140;
+    x.fillStyle='#fff'; x.lineWidth=6; rr(x,bx,by,bw,bh,28); x.fill(); x.stroke();
+    x.beginPath(); x.moveTo(cx-20,by+bh); x.lineTo(cx,by+bh+26); x.lineTo(cx+20,by+bh); x.fillStyle='#fff'; x.fill(); x.stroke();
+    x.fillStyle='#fff'; x.fillRect(cx-17,by+bh-5,34,9);
+    const fb=fitBlock(x,say,bw-36,3,32,22,600,FB);
+    x.fillStyle=INK; x.font=`600 ${fb.size}px ${FB}`;
+    const lh=fb.size*1.35, startY=by+bh/2-(fb.lines.length-1)*lh/2+fb.size*0.34;
+    fb.lines.forEach((ln,i)=>x.fillText(ln,cx,startY+i*lh));
+
+    x.drawImage(img,cx-190,y0+200,380,494);
+
+    x.fillStyle=INK; fitOne(x,name,pw-50,58,30,800,FD); x.fillText(name,cx,y0+742);
+    x.fillStyle=INK; fitOne(x,jobtitle,pw-50,32,22,600,FB); x.fillText(jobtitle,cx,y0+782);
+
+    const shown=[]; let tot=0; x.font=`600 22px ${FB}`;
+    for(const t of tags){
+      const lbl=t.length>13?t.slice(0,12)+'…':t; const w=x.measureText('✨ '+lbl).width+28;
+      if(shown.length>=3||tot+w+(shown.length?10:0)>pw-50) break;
+      tot+=w+(shown.length?10:0); shown.push({lbl,w});
+    }
+    let tx=cx-tot/2;
+    shown.forEach(s=>{
+      x.fillStyle='#FFE58A'; x.lineWidth=4; x.strokeStyle=INK; rr(x,tx,y0+ph-46,s.w,32,16); x.fill(); x.stroke();
+      x.fillStyle=INK; x.textAlign='center'; x.font=`600 22px ${FB}`; x.fillText('✨ '+s.lbl,tx+s.w/2,y0+ph-23); tx+=s.w+10;
+    });
+    x.textAlign='center';
+  }
+  panel(45,'#B7F2D6',imgE,empSay(R.eE),dispE(),R.ei.title,emp.tags);
+  panel(555,'#FFC4D6',imgB,R.line.say,dispB(),R.bi.title,boss.tags);
+
+  x.fillStyle='#FF5C8A'; x.lineWidth=7; x.strokeStyle=INK; x.beginPath(); x.arc(540,y0+395,46,0,6.2832); x.fill(); x.stroke();
+  x.font=`800 44px ${FD}`; x.lineWidth=7; x.strokeStyle=INK; x.fillStyle='#fff'; x.strokeText('VS',540,y0+410); x.fillText('VS',540,y0+410);
+
+  const my=1115;
+  x.fillStyle=INK; rr(x,55,my+10,990,160,32); x.fill();
+  x.fillStyle='#FFD23F'; rr(x,45,my,990,160,32); x.fill(); x.lineWidth=8; x.strokeStyle=INK; x.stroke();
+  x.fillStyle=INK; x.font=`800 76px ${FD}`; x.fillText(`💘 ম্যাচ ${R.score}%`,540,my+88);
+  fitOne(x,R.verdict,930,32,22,600,FB); x.fillText(R.verdict,540,my+138);
+
+  x.fillStyle='#fff'; x.font=`600 30px ${FB}`; x.fillText('🎭 তুমিও বানাও তোমার অফিসের কার্টুন, একদম ফ্রি!',540,1325);
+  return c;
+}
+let posterT=0, posterSeq=0;
+function schedulePoster(){
+  clearTimeout(posterT);
+  const my=++posterSeq;
+  const st=$('#pStatus'); if(st) st.textContent='ছবি তৈরি হচ্ছে...';
+  posterT=setTimeout(async()=>{
+    try{
+      const c=await renderPoster();
+      if(my!==posterSeq) return;
+      const img=$('#posterImg'); if(img) img.src=c.toDataURL('image/png');
+      if(st) st.textContent='ছবিটা রেডি। ডাউনলোড করো বা চেপে ধরে সেভ করো।';
+    }catch(e){ if(st) st.textContent='ছবি বানাতে সমস্যা হলো। আবার চেষ্টা করো।'; }
+  },180);
+}
+
+/* ================= actions ================= */
+let toastT;
+function toast(msg){ const t=$('#toast'); t.textContent=msg; t.classList.add('on'); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('on'),2200); }
+const dlPromise=(async()=>{ try{ return window.claude&&window.claude.use?await window.claude.use('downloads'):null; }catch(e){ return null; } })();
+async function pngBlob(){ const c=await renderPoster(); return await new Promise(r=>c.toBlob(r,'image/png')); }
+async function downloadPNG(){
+  const btn=$('#dlBtn'); btn.disabled=true;
+  try{
+    const blob=await pngBlob(); if(!blob){ toast('ছবি বানানো গেল না'); return; }
+    const fname='chakrir-circus-'+Date.now().toString(36)+'.png';
+    const dl=await dlPromise;
+    if(dl){
+      try{ await dl.save({filename:fname,data:blob}); toast('সেভ হয়েছে! এবার পোস্ট করে দাও 🎉'); return; }
+      catch(err){ if(err&&err.code==='declined') return; }
+    }
+    try{ const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=fname; document.body.appendChild(a); a.click(); a.remove(); }catch(e){}
+    toast('ডাউনলোড না হলে ওপরের ছবিটা চেপে ধরে সেভ করো');
+  } finally { btn.disabled=false; }
+}
+async function sharePNG(){
+  try{
+    const blob=await pngBlob(); const f=new File([blob],'chakrir-circus.png',{type:'image/png'});
+    if(navigator.canShare&&navigator.canShare({files:[f]})){ await navigator.share({files:[f],title:'চাকরির সার্কাস'}); }
+    else toast('এই ডিভাইসে শেয়ার চলছে না, ডাউনলোড করো');
+  }catch(e){ if(e&&e.name!=='AbortError') toast('শেয়ার করা গেল না, ডাউনলোড করো'); }
+}
+async function copyLink(){
+  const txt=location.href;
+  try{ await navigator.clipboard.writeText(txt); toast('লিংক কপি হয়েছে! বন্ধুকে পাঠাও 😄'); }
+  catch(e){
+    try{ const ta=document.createElement('textarea'); ta.value=txt; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.select(); const ok=document.execCommand('copy'); document.body.removeChild(ta); toast(ok?'লিংক কপি হয়েছে! 😄':'কপি করা গেল না'); }
+    catch(_){ toast('কপি করা গেল না'); }
+  }
+}
+function syncHash(){ try{ history.replaceState(null,'','#p='+encodeState()); }catch(e){} }
+
+/* ================= navigation (real page load) ================= */
+let navigating=false;
+function hardGo(hash){
+  navigating=true;
+  try{
+    if(hash) location.hash=hash; else history.pushState(null,'',location.pathname+location.search);
+    location.reload();
+  }catch(e){ navigating=false; }
+}
+const GO_LABEL='🎬 প্রোফাইল রেডি করো!';
+async function generate(){
+  const btn=$('#goBtn'); if(btn.disabled) return;
+  flushPending();
+  btn.disabled=true;
+  const msgs=['☕ চায়ের কাপ ধোয়া হচ্ছে...','👔 বসের টাই ইস্ত্রি হচ্ছে...','🔍 ফিচারগুলো বিশ্লেষণ হচ্ছে...','🎨 কার্টুন আঁকা শেষ হচ্ছে...'];
+  let i=0; btn.textContent=msgs[0];
+  const iv=setInterval(()=>{ i=(i+1)%msgs.length; btn.textContent=msgs[i]; },420);
+  await new Promise(r=>setTimeout(r,RM?200:1600));
+  clearInterval(iv);
+  hardGo('#p='+encodeState());
+  setTimeout(()=>{ // fallback if this view cannot reload
+    if(!$('#viewBuild').hidden){ showResult(); }
+  },900);
+}
+function showResult(){
+  $('#viewBuild').hidden=true; $('#viewResult').hidden=false;
+  renderResultPage(); schedulePoster();
+  window.scrollTo(0,0);
+}
+function randomize(){
+  const pick=a=>a[Math.floor(Math.random()*a.length)].id;
+  emp.mood=pick(EMP_MOODS); emp.look=pick(EMP_LOOKS); emp.food=pick(FOODS); emp.excuse=pick(EXCUSES);
+  boss.type=pick(BOSS_TYPES); boss.look=pick(BOSS_LOOKS); boss.line=pick(BOSS_LINES);
+  emp.tags=[]; boss.tags=[];
+  buildForms(); renderStage();
+}
+
+/* ================= wiring ================= */
+document.addEventListener('change',e=>{
+  const t=e.target;
+  if(t.matches('#viewBuild input[type=radio]')){
+    const [g,k]=t.name.split('-');
+    if(g==='emp'){ emp[k]=t.value; renderStage('emp'); }
+    else { boss[k]=t.value; renderStage('boss'); }
+    tagsUI(g);
+  }
+  if(t.id==='optBoss'){ opts.showBoss=t.checked; $('#cardBN').textContent=dispB(); updateMatchLabel(); syncHash(); schedulePoster(); }
+  if(t.id==='optEmp'){ opts.showEmp=t.checked; $('#cardEN').textContent=dispE(); updateMatchLabel(); syncHash(); schedulePoster(); }
+});
+document.addEventListener('input',e=>{
+  if(e.target.id==='empName'){ emp.name=e.target.value; updateTags(); }
+  if(e.target.id==='bossName'){ boss.name=e.target.value; updateTags(); }
+});
+document.addEventListener('keydown',e=>{
+  const id=e.target.id;
+  if((id==='empKw'||id==='bossKw')&&(e.key==='Enter'||e.key===','||e.key==='،')){
+    e.preventDefault(); const kind=id==='empKw'?'emp':'boss';
+    if(addTag(kind,e.target.value)) e.target.value='';
+  }
+});
+document.addEventListener('click',e=>{
+  const b=e.target.closest('button'); if(!b) return;
+  if(b.classList.contains('kwadd')){ const kind=b.dataset.kind, el=$('#'+kind+'Kw'); if(addTag(kind,el.value)) el.value=''; el.focus(); return; }
+  if(b.classList.contains('sg')){ addTag(b.dataset.kind,b.dataset.kw); return; }
+  if(b.classList.contains('tagx')){ const kind=b.dataset.kind; stOf(kind).tags.splice(+b.dataset.i,1); tagsUI(kind); renderStage(kind); return; }
+  switch(b.id){
+    case 'goBtn': generate(); break;
+    case 'randBtn': randomize(); break;
+    case 'dlBtn': downloadPNG(); break;
+    case 'shareBtn': sharePNG(); break;
+    case 'linkBtn': copyLink(); break;
+    case 'editBtn': hardGo('#e='+encodeState()); break;
+    case 'newBtn': hardGo(''); break;
+  }
+});
+window.addEventListener('hashchange',()=>{ if(!navigating) location.reload(); });
+
+/* ================= boot ================= */
+(function boot(){
+  const m=/^#(p|e)=([A-Za-z0-9_-]+)$/.exec(location.hash);
+  const ok=m && decodeState(m[2]);
+  buildForms();
+  if(ok && m[1]==='p'){
+    showResult();
+    if(navigator.canShare && typeof File!=='undefined'){ try{ if(navigator.canShare({files:[new File([''],'a.png',{type:'image/png'})]})) $('#shareBtn').hidden=false; }catch(e){} }
+  } else {
+    renderStage();
+  }
+})();
+})();
+</script>
+</body>
+</html>
